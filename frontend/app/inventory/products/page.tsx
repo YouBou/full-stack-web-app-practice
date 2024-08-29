@@ -2,12 +2,15 @@
 
 import { useState, useEffect } from "react";
 import productsData from "./sample/dummy_products.json";
+import Link from "next/link";
+
 type ProductData = {
     id: number;
     name: string;
     price: number;
     description: string;
 };
+
 export default function Page() {
     // 読み込みデータを保持
     const [data, setData] = useState<Array<ProductData>>([]);
@@ -28,6 +31,7 @@ export default function Page() {
                         <th>単価</th>
                         <th>説明</th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,6 +41,7 @@ export default function Page() {
                             <td>{data.name}</td>
                             <td>{data.price}</td>
                             <td>{data.description}</td>
+                            <td><Link href={`/inventory/products/${data.id}`}>在庫処理</Link></td>
                             <td>
                                 <button>更新・削除</button>
                             </td>

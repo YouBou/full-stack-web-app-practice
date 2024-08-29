@@ -1,0 +1,42 @@
+export default function Page() {
+    return (
+        <>
+            <h2>商品一覧</h2>
+            <button>商品を追加する</button>
+            <table>
+                <thead>
+                    <tr>
+                        <th>商品ID</th>
+                        <th>商品名</th>
+                        <th>単価</th>
+                        <th>説明</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>スマートブレンダーPro</td>
+                        <td>12800</td>
+                        <td>7つの自動プログラムと10段階の速度調整機能を搭載した多機能ブレンダー。</td>
+                        <td><button>更新・削除</button></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>エコフレンドリー竹製カトラリーセット</td>
+                        <td>2500</td>
+                        <td>環境に優しい竹製のフォーク、ナイフ、スプーン各4本セット。収納ケース付き。</td>
+                        <td><button>更新・削除</button></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>ウルトラライト・ハイキングバックパック</td>
+                        <td>18500</td>
+                        <td>重量わずか500gの超軽量バックパック。30Lの大容量で、アウトドア愛好家に最適。</td>
+                        <td><button>更新・削除</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </>
+    )
+}

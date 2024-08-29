@@ -1,4 +1,21 @@
+'use client'
+
+import { useState, useEffect } from "react";
+import productsData from "./sample/dummy_products.json";
+type ProductData = {
+    id: number;
+    name: string;
+    price: number;
+    description: string;
+};
 export default function Page() {
+    // 読み込みデータを保持
+    const [data, setData] = useState<Array<ProductData>>([]);
+
+    useEffect(() => {
+        setData(productsData)
+    }, [])
+
     return (
         <>
             <h2>商品一覧</h2>
@@ -14,27 +31,17 @@ export default function Page() {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>スマートブレンダーPro</td>
-                        <td>12800</td>
-                        <td>7つの自動プログラムと10段階の速度調整機能を搭載した多機能ブレンダー。</td>
-                        <td><button>更新・削除</button></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>エコフレンドリー竹製カトラリーセット</td>
-                        <td>2500</td>
-                        <td>環境に優しい竹製のフォーク、ナイフ、スプーン各4本セット。収納ケース付き。</td>
-                        <td><button>更新・削除</button></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>ウルトラライト・ハイキングバックパック</td>
-                        <td>18500</td>
-                        <td>重量わずか500gの超軽量バックパック。30Lの大容量で、アウトドア愛好家に最適。</td>
-                        <td><button>更新・削除</button></td>
-                    </tr>
+                    {data.map((data: any) => (
+                        <tr key={data.id}>
+                            <td>{data.id}</td>
+                            <td>{data.name}</td>
+                            <td>{data.price}</td>
+                            <td>{data.description}</td>
+                            <td>
+                                <button>更新・削除</button>
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </>

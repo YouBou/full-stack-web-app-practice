@@ -1,4 +1,53 @@
+"use client"
+
+import { useState, useEffect } from "react";
+import productsData from "../sample/dummy_products.json";
+import inventoriesData from "../sample/dummy_inventories.json";
+
+type ProductData = {
+    id: number;
+    name: string;
+    price: number;
+    description: string;
+};
+
+type InventoryData = {
+    id: number;
+    type: string;
+    date: string;
+    unit: number;
+    quantity: number;
+    price: number;
+    inventory: number;
+}
+
 export default function Page() {
+    // 商品IDにあたる検索条件
+    const params = { id: 1 };
+
+    // 読込データを保持
+const [product, setProduct] = useState<ProductData>(
+    {
+        id: 0,
+        name: "",
+        price: 0,
+        description: "",
+    }
+)
+
+const [data, setData] = useState<Array<InventoryData>>([])
+
+useEffect(() => {
+    const selectedProduct: ProductData = productsData.find(v => v.id == params.id) ?? {
+        id: 0,
+        name: "",
+        price: 0,
+        description: "",
+    };
+    setProduct(selectedProduct);
+    setData(inventoriesData);
+}, [])
+
     return (
         <>
             <h2>商品在庫管理</h2>
@@ -6,7 +55,7 @@ export default function Page() {
             <form>
                 <div>
                     <label>商品名:</label>
-                    <span>スマートブレンダーPro</span>
+                    <span>{product.name}</span>
                 </div>
                 <div>
                     <label>数量:</label>
@@ -28,46 +77,16 @@ export default function Page() {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>卸し</td>
-                        <td>2023-04-03 18:54:13</td>
-                        <td>12800</td>
-                        <td>2</td>
-                        <td>25600</td>
-                        <td>390</td>
+                    {data.map((data: InventoryData) => (
+                        <tr key={data.id}>
+                        <td>{data.type}</td>
+                        <td>{data.date}</td>
+                        <td>{data.unit}</td>
+                        <td>{data.quantity}</td>
+                        <td>{data.price}</td>
+                        <td>{data.inventory}</td>
                     </tr>
-                    <tr>
-                        <td>仕入れ</td>
-                        <td>2023-04-03 18:54:13</td>
-                        <td>12800</td>
-                        <td>3</td>
-                        <td>38400</td>
-                        <td>392</td>
-                    </tr>
-                    <tr>
-                        <td>卸し</td>
-                        <td>2023-04-03 18:54:13</td>
-                        <td>12800</td>
-                        <td>1</td>
-                        <td>12800</td>
-                        <td>389</td>
-                    </tr>
-                    <tr>
-                        <td>卸し</td>
-                        <td>2023-04-03 18:54:13</td>
-                        <td>12800</td>
-                        <td>10</td>
-                        <td>128000</td>
-                        <td>390</td>
-                    </tr>
-                    <tr>
-                        <td>仕入れ</td>
-                        <td>2023-04-03 18:54:13</td>
-                        <td>12800</td>
-                        <td>400</td>
-                        <td>5120000</td>
-                        <td>400</td>
-                    </tr>
+                    ))}
                 </tbody>
             </table>
         </>

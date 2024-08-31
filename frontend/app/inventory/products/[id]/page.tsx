@@ -21,9 +21,9 @@ type InventoryData = {
     inventory: number;
 }
 
-export default function Page() {
-    // 商品IDにあたる検索条件
-    const params = { id: 1 };
+export default function Page({ params }: {
+    params: {id: number},
+}) {
 
     // 読込データを保持
 const [product, setProduct] = useState<ProductData>(

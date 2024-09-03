@@ -90,13 +90,10 @@ export default function PagePage({ params }: {
         // actionによってHTTPメソッドと使用するパラメーターを切り替える
         if (action === "purchase") {
             handlePurchase(data);
-        }
-
-        if (data.id === null) {
-            return;
-        }
-        
-        if (action === "sell") {
+        } else if (action === "sell") {
+            if (data.id === null) {
+                return;
+            }
         handleSell(data);
         }
     };

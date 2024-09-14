@@ -48,6 +48,11 @@ class ProductView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status.HTTP_200_OK)
+
+    def delete(self, request, id, format=None):
+        product = self.get_object(id)
+        product.delete()
+        return Response(status = status.HTTP_200_OK)
     
 class ProductModelViewSet(ModelViewSet):
     queryset = Product.objects.all()

@@ -16,3 +16,14 @@ class SaleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sales
         fields = '__all__'
+
+class InventorySerializer(serializers.Serializer):
+    """
+    仕入れ・売上情報の一覧
+    Modelに依存しないため、個別にフィールドを定義している
+    """
+    id = serializers.IntegerField()
+    unit = serializers.IntegerField()
+    quantity = serializers.IntegerField()
+    type = serializers.IntegerField()
+    date = serializers.DateTimeField()

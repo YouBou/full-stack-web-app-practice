@@ -1,10 +1,14 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Product
-from .serializers import ProductSerializer, PurchaseSerializer, SaleSerializer
+from .models import Product, Purchase, Sales
+from .serializers import ProductSerializer, PurchaseSerializer, SaleSerializer, InventorySerializer
 from rest_framework import status
 from rest_framework.exceptions import NotFound
+from django.db.models import F, Value, Sum
+from api.inventory.exception import BusinessException
+from django.db.models.functions import Coalesce
+
 
 class ProductView(APIView):
     """
@@ -75,7 +79,46 @@ class SalesView(APIView):
         """
         serializer = SaleSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        # 在庫が売る分の数量を超えないかチェック
+
+        # 在庫テーブルのレコードを取得
+        purchase = Purchase.objects.filter(product_id=request.data['product']).aaggregate(quantity_sum=Coalesce(Sum('quantity'), 0))
+
+        # 卸しテーブルのレコードを取得
+        sales = Sales.objects.filter(product_id=request.data['product']).aggregate(quantity_sum=Coalesce(Sum('quantity'), 0))
+
+        # 在庫が売る分の数量を超えている場合はエラーレスポンスを返す
+        if purchase['quantity_sum'] < (sales['quantity_sum'] + int(request.data['quantity'])):
+            raise BusinessException('在庫数量を超過することはできません')
+
         serializer.save()
         return Response(serializer.data, status.HTTP_201_CREATED)
 
+class InventoryView(APIView):
+    def get(self, request, id=None, format=None):
+        """
+        仕入れ・売上情報を取得する
+        """
+        if id is None:
+            # 件数が多くなるので商品IDは必ず指定する
+            return Response(serializer.data, status.HTTP_400_BAD_REQUEST)
+        
+        # UNIONするために、それぞれフィールド名を再定義している
+        purchase = Purchase.objects.filter(product_id=id).prefetch_related('product').values(
+            "id",
+            "quantity",
+            type=Value('1'),
+            date=F('sales_date'),
+            unit=F('product__price')
+        )
+        sales = Sales.objects.filter(product_id=id).prefetch_related('product').values(
+            "id",
+            "quantity",
+            type=Value('2'),
+            date=F('sales_date'),
+            unit=F('product__price')
+        )
+        queryset = purchase.union(sales).order_by(F("date"))
+        serializer = InventorySerializer(queryset, many=True)
 
+        return Response(serializer.data, status.HTTP_200_OK)

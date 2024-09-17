@@ -8,12 +8,20 @@ from rest_framework.exceptions import NotFound
 from django.db.models import F, Value, Sum
 from api.inventory.exception import BusinessException
 from django.db.models.functions import Coalesce
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 class ProductView(APIView):
     """
     商品操作に関する関数
     """
+    # 認証クラスの指定
+    authentication_classes = [JWTAuthentication]
+    # アクセス許可の指定
+    # 認証済みのリクエストのみ許可
+    permission_classes = [IsAuthenticated]
+
     def get_object(self, pk):
         """
         商品操作に関する関数で共通で使用する商品取得関数

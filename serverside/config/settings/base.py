@@ -154,3 +154,6 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=30),
     'UPDATE_LAST_LOGIN': True,
 }
+
+# クッキーの有効期限に使用する
+COOKIE_TIME = 60 * 60 * 12

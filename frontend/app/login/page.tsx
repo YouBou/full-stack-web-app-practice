@@ -67,6 +67,11 @@ export default function Page() {
                         ログイン
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+                        {authError && (
+                            <Typography variant="body2" color="error">
+                                {authError}
+                            </Typography>
+                        )}{" "}
                         <TextField
                             type="text"
                             id="username"

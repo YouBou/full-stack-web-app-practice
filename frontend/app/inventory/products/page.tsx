@@ -28,6 +28,7 @@ import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import productsData from "./sample/dummy_products.json";
+import axios from 'axios';
 
 type ProductData = {
     id: number | null;
@@ -60,7 +61,11 @@ export default function Page() {
     };
 
     useEffect(() => {
-        setData(productsData);
+        axios.get('/api/product')
+            .then((res) => res.data)
+            .then((data) => {
+                setData(data)
+            })
     }, [open])
 
     // 登録データを保持

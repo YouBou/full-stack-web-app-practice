@@ -136,7 +136,10 @@ export default function Page() {
         setId(0);
     };
     const handleDelete = (id: number) => {
-        result('success', '商品が削除されました')
+        axios.delete(`/api/inventory/products/${id}`)
+            .then((response) => {
+                result('success', '商品が削除されました')
+            });
         setId(0);
     };
 

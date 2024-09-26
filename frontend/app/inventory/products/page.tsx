@@ -108,7 +108,10 @@ export default function Page() {
         setId(0);
         };
     const handleAdd = (data: ProductData) => {
-        result('success','商品が登録されました')
+        axios.post("/api/inventory/products", data)
+            .then((response) => {
+                result('success','商品が登録されました')
+            });
         setId(0);
     };
 

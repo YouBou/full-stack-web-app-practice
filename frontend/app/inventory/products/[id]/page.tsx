@@ -18,7 +18,7 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from "../../../../plugins/axios";
 
 type ProductData = {
     id: number;

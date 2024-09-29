@@ -28,7 +28,7 @@ import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import productsData from "./sample/dummy_products.json";
-import axios from 'axios';
+import axios from "../../../plugins/axios";
 
 type ProductData = {
     id: number | null;
